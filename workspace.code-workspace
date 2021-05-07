@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "..\\..\\..\\farmanager"
+	},
+	{
+		"path": "..\\..\\..\\dashboard"
+	}
+],
+  "settings": {
+    "python.pythonPath": "C:\\Users\\sho\\AppData\\Local\\Programs\\Python\\Python36\\python.exe"
+  }
+}
