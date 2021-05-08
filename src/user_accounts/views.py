@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
-from .forms import OrderForm
+from .forms import OrderForm, CustomerForm
 
 
 def home(request):
@@ -40,7 +40,7 @@ def createOrder(request):
     form = OrderForm()
 
     if request.method == 'POST':
-        # print('Printing method:', request.POST)
+        # Procedute to save data in a POST
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
@@ -48,3 +48,51 @@ def createOrder(request):
 
     context = {'form': form}
     return render(request, 'user_accounts/order_form.html', context)
+
+def updateOrder(request, pk):
+
+    order = Order.objects.get(id=pk)
+    form = OrderForm(instance=order)
+
+    if request.method == 'POST':
+        # Procedure to save data in a POST for not new data
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect(('/'))
+
+    context = {'form': form}
+    return render(request, 'user_accounts/order_form.html', context) 
+
+
+def deleteOrder(request, pk):
+    order = Order.objects.get(id=pk)
+
+    if request.method == 'POST':
+        order.delete()
+        return redirect('/')
+
+    context = {'item': order}
+    return render(request, 'user_accounts/delete.html', context)
+
+
+def createCustomer(request):
+    form = CustomerForm()
+
+    if request.method == 'POST':
+        # Procedute to save data in a POST
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(('/'))
+
+    context = {'form': form}
+    return render(request, 'user_accounts/customer_form.html', context)
+
+def updateCustomer(request, pk):
+    customer = Customer.objects.get(id=pk)
+    form = CustomerForm(instance=customer)
+
+    context = {'form': form}
+
+    return render(request, 'user_accounts/customer_form.html', context)
