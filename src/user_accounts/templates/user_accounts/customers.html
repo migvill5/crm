@@ -5,12 +5,12 @@
 	<br>
 
 <div class="row">
-	<div class="col-md">
+	<div class="col-md-2">
 		<div class="card card-body">
 			<h5>Customer:</h5>
 			<hr>
 			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'update_customer' customer.id %}">Update Customer</a>
-			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Customer</a>
+			<a class="btn btn-outline-success btn-sm btn-block" href="{% url 'create_order' customer.id %}">Place Order</a>
 
 		</div>
 	</div>

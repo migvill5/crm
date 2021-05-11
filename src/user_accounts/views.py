@@ -36,9 +36,10 @@ def products(request):
     products = Product.objects.all()
     return render(request, 'user_accounts/products.html', {'products': products})
 
-def createOrder(request):
-    form = OrderForm()
-
+def createOrder(request, pk):
+    customer = Customer.objects.get(id=pk)
+    
+    form = OrderForm(initial={'customer': customer})
     if request.method == 'POST':
         # Procedute to save data in a POST
         form = OrderForm(request.POST)

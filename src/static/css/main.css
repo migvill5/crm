@@ -1,21 +1,25 @@
+:root {
+    --main-bg-color: rgb(248, 242, 245);
+    --status-bg-color: #db4382;
+  }
 
 #logo{
 }
 
 body{
-    background-color: #ebeff5;
+    background-color: var(--main-bg-color);
 }
 
 
 #total-orders{
-    background-color: #4cb4c7;
+    background-color: var(--status-bg-color);
 }
 
 
 #orders-delivered{
-    background-color: #7abecc;
+    background-color: var(--status-bg-color);
 }
 
 #orders-pending{
-    background-color: #7CD1C0;
+    background-color: var(--status-bg-color);
 }
