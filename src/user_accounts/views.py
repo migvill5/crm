@@ -2,6 +2,8 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+
 from .models import *
 from .forms import OrderForm, CustomerForm
 from .filters import OrderFilter
@@ -106,3 +108,19 @@ def updateCustomer(request, pk):
     context = {'form': form}
 
     return render(request, 'user_accounts/customer_form.html', context)
+
+def registerPage(request):
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            redirect(('/'))
+
+    context = {'form': form}
+    return render(request, 'user_accounts/register.html', context)
+
+def loginPage(request):
+    context = {}
+    return render(request, 'user_accounts/login.html', context)
