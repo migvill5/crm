@@ -1,7 +1,10 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.forms import inlineformset_factory
 from .models import *
 from .forms import OrderForm, CustomerForm
+from .filters import OrderFilter
 
 
 def home(request):
@@ -28,7 +31,12 @@ def customers(request, pk):
     customer = Customer.objects.get(id=pk)
     orders = customer.order_set.all()
     order_count = orders.count()
-    context = {'customer': customer, 'orders': orders, 'order_count': order_count}
+
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs
+
+    context = {'customer': customer, 'orders': orders, 'order_count': order_count,
+    'myFilter': myFilter}
     return render(request, 'user_accounts/customers.html', context)
 
 
@@ -37,17 +45,18 @@ def products(request):
     return render(request, 'user_accounts/products.html', {'products': products})
 
 def createOrder(request, pk):
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('product', 'status'), extra=5)
     customer = Customer.objects.get(id=pk)
-    
-    form = OrderForm(initial={'customer': customer})
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
+    # form = OrderForm(initial={'customer': customer})
     if request.method == 'POST':
         # Procedute to save data in a POST
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = OrderFormSet(request.POST, isinstance=customer)
+        if formset.is_valid():
+            formset.save()
             return redirect(('/'))
 
-    context = {'form': form}
+    context = {'formset': formset}
     return render(request, 'user_accounts/order_form.html', context)
 
 def updateOrder(request, pk):
