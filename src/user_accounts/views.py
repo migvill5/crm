@@ -116,7 +116,7 @@ def registerPage(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            redirect(('/'))
+            redirect(('login'))
 
     context = {'form': form}
     return render(request, 'user_accounts/register.html', context)
